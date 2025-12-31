@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { House } from 'lucide-svelte';
 	import RandomNoteStaff from '$lib/components/RandomNoteStaff.svelte';
 	import {
 		getNoteNamesForKey,
@@ -53,6 +55,15 @@
 
 <main>
 	<h1>Exercise</h1>
+	<button
+		type="button"
+		class="home-button"
+		onclick={() => goto('/')}
+		aria-label="Retour au menu d'accueil"
+		title="Retour au menu d'accueil"
+	>
+		<House size={24} />
+	</button>
 	<label>
 		Key signature
 		<select bind:value={keySignature}>
@@ -83,6 +94,16 @@
 </main>
 
 <style>
+	.home-button {
+		position: fixed;
+		top: 1rem;
+		left: 1rem;
+		padding: 0.5rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 	.answers {
 		display: flex;
 		flex-wrap: wrap;

@@ -21,6 +21,7 @@
 		"vite": "^7.2.6"
 	},
 	"dependencies": {
+		"lucide-svelte": "^0.562.0",
 		"vexflow": "^5.0.0"
 	}
 }
