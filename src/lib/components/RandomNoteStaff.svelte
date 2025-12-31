@@ -1,76 +1,33 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Accidental, Formatter, Renderer, Stave, StaveNote, Voice } from 'vexflow';
 
-	export type KeySignature = 'C' | 'G' | 'D' | 'A' | 'E' | 'F' | 'Bb' | 'Eb' | 'Ab';
-	export type Clef = 'treble' | 'bass' | 'alto' | 'tenor';
+	import { 
+		Accidental, 
+		Formatter, 
+		Renderer, 
+		Stave, 
+		StaveNote, 
+		Voice 
+	} from 'vexflow';
 
-	let { keySignature = 'C', clef = 'treble' } = $props<{ keySignature?: KeySignature; clef?: Clef }>();
-
-	type NoteName =
-		| 'C'
-		| 'C#'
-		| 'D'
-		| 'D#'
-		| 'E'
-		| 'F'
-		| 'F#'
-		| 'G'
-		| 'G#'
-		| 'A'
-		| 'A#'
-		| 'B'
-		| 'Bb'
-		| 'Eb'
-		| 'Ab'
-		| 'Db';
-
-	type NoteSpec = {
-		name: NoteName;
-		octave: 2 | 3 | 4 | 5;
-	};
-
-	const keySignatureScales: Record<KeySignature, NoteName[]> = {
-		C:  ['C', 'D', 'E', 'F', 'G', 'A', 'B'    ],
-		G:  ['G', 'A', 'B', 'C', 'D', 'E', 'F#'   ],
-		D:  ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'  ],
-		A:  ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#' ],
-		E:  ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#'],
-		F:  ['F', 'G', 'A', 'Bb', 'C', 'D', 'E'   ],
-		Bb: ['Bb', 'C', 'D', 'Eb', 'F', 'G', 'A'  ],
-		Eb: ['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D' ],
-		Ab: ['Ab', 'Bb', 'C', 'Db', 'Eb', 'F', 'G']
-	};
-
-	function getOctavesForClef(selectedClef: Clef): Array<2 | 3 | 4 | 5> {
-		switch (selectedClef) {
-			case 'bass':
-				return [2, 3];
-			case 'alto':
-				return [3, 4];
-			case 'tenor':
-				return [3, 4];
-			case 'treble':
-			default:
-				return [4, 5];
-		}
-	}
-
-	function getNotePool(signature: KeySignature, selectedClef: Clef): NoteSpec[] {
-		const scale = keySignatureScales[signature];
-		const octaves = getOctavesForClef(selectedClef);
-		const pool: NoteSpec[] = [];
-		for (const octave of octaves) {
-			for (const name of scale){
-				pool.push({ name, octave });
-			}
-		}
-		return pool;
-	}
-
-	function pickRandom<T>(items: T[]): T {
-		return items[Math.floor(Math.random() * items.length)];
-	}
+	import { 
+		pickRandomNote, 
+		type Clef, 
+		type KeySignature, 
+		type NoteSpec 
+	} from '$lib/music/notePool';
+	
+	let {
+		keySignature = 'C',
+		clef = 'treble',
+		note = undefined,
+		showNewNoteButton = true
+	} = $props<{
+		keySignature?: KeySignature;
+		clef?: Clef;
+		note?: NoteSpec;
+		showNewNoteButton?: boolean;
+	}>();
 
 	function toVexKey(note: NoteSpec): { key: string; accidental: '#' | 'b' | null } {
 		const lower = note.name.toLowerCase();
@@ -84,15 +41,18 @@
 	}
 
 	let scoreElement: HTMLDivElement | null = null;
-	let currentNote = $state<NoteSpec>(pickRandom(getNotePool('C', 'treble')));
+	let currentNote = $state<NoteSpec>(pickRandomNote('C', 'treble'));
 	let isReady = $state(false);
 	let errorMessage = $state<string | null>(null);
 	let renderScore: (() => void) | null = null;
 
 	$effect(() => {
-		const signature = keySignature;
-		const selectedClef = clef;
-		currentNote = pickRandom(getNotePool(signature, selectedClef));
+		const incoming = note;
+		if (incoming) {
+			currentNote = incoming;
+			return;
+		}
+		currentNote = pickRandomNote(keySignature, clef);
 	});
 
 	$effect(() => {
@@ -156,14 +116,19 @@
 	});
 
 	function regenerateNote() {
-		currentNote = pickRandom(getNotePool(keySignature, clef));
+		if (note) {
+			return;
+		}
+		currentNote = pickRandomNote(keySignature, clef);
 		renderScore?.();
 	}
 </script>
 
 <div class="card">
 	<div bind:this={scoreElement} aria-label="Sheet"></div>
-	<button onclick={regenerateNote} disabled={!isReady || !!errorMessage}>New note</button>
+	{#if showNewNoteButton}
+		<button onclick={regenerateNote} disabled={!isReady || !!errorMessage}>New note</button>
+	{/if}
 	{#if errorMessage}
 		<p>{errorMessage}</p>
 	{/if}
