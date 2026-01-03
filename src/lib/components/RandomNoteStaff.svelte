@@ -16,7 +16,7 @@
 		type KeySignature, 
 		type NoteSpec 
 	} from '$lib/music/notePool';
-	
+
 	let {
 		keySignature = 'C',
 		clef = 'treble',
@@ -125,7 +125,7 @@
 </script>
 
 <div class="card">
-	<div bind:this={scoreElement} aria-label="Sheet"></div>
+	<div bind:this={scoreElement} aria-label="sheet"></div>
 	{#if showNewNoteButton}
 		<button onclick={regenerateNote} disabled={!isReady || !!errorMessage}>New note</button>
 	{/if}

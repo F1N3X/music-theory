@@ -10,6 +10,7 @@
 		type NoteName,
 		type NoteSpec
 	} from '$lib/music/notePool';
+	import { _ } from 'svelte-i18n'
 
 	const keySignatures: { value: KeySignature; label: string }[] = [
 		{ value: 'C', label: 'C (C major)' },
@@ -84,7 +85,9 @@
 
 	<div class="answers" aria-label="Answer buttons">
 		{#each answerOptions as noteName}
-			<button type="button" onclick={() => submitAnswer(noteName)}>{noteName}</button>
+			<button type="button" onclick={() => submitAnswer(noteName)}>
+				{$_(`noteName.${noteName}`)}
+			</button>
 		{/each}
 	</div>
 
