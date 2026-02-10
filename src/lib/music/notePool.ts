@@ -66,7 +66,27 @@ export function getNotePool(signature: KeySignature, selectedClef: Clef): NoteSp
 	return pool;
 }
 
+export const chromaticNotes: NoteName[] = [
+	'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'
+];
+
+export function getChromaticPool(selectedClef: Clef): NoteSpec[] {
+	const octaves = getOctavesForClef(selectedClef);
+	const pool: NoteSpec[] = [];
+	for (const octave of octaves) {
+		for (const name of chromaticNotes) {
+			pool.push({ name, octave });
+		}
+	}
+	return pool;
+}
+
 export function pickRandomNote(signature: KeySignature, selectedClef: Clef): NoteSpec {
 	const notePool = getNotePool(signature, selectedClef);
     return notePool[Math.floor(Math.random() * notePool.length)];
+}
+
+export function pickRandomChromaticNote(selectedClef: Clef): NoteSpec {
+	const notePool = getChromaticPool(selectedClef);
+	return notePool[Math.floor(Math.random() * notePool.length)];
 }

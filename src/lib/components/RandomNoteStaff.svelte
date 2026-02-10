@@ -21,12 +21,14 @@
 		keySignature = 'C',
 		clef = 'treble',
 		note = undefined,
-		showNewNoteButton = true
+		showNewNoteButton = true,
+		noKeySignature = false
 	} = $props<{
 		keySignature?: KeySignature;
 		clef?: Clef;
 		note?: NoteSpec;
 		showNewNoteButton?: boolean;
+		noKeySignature?: boolean;
 	}>();
 
 	function toVexKey(note: NoteSpec): { key: string; accidental: '#' | 'b' | null } {
@@ -81,7 +83,9 @@
 
 				const stave = new Stave(10, 40, 440);
 				stave.addClef(clef);
-				stave.addKeySignature(keySignature);
+				if (!noKeySignature) {
+					stave.addKeySignature(keySignature);
+				}
 				stave.setContext(context).draw();
 
 				const { key, accidental } = toVexKey(currentNote);
