@@ -2,31 +2,16 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color: #222;
+  background-color: #fafbfc;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -35,52 +20,153 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 2rem;
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2.5em;
   line-height: 1.1;
-}
-
-.card {
-  padding: 2em;
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
 
 #app {
-  max-width: 1280px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  padding: 0.5em 1em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  outline: none;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #b3b3ff;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  border-color: #646cff;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: none;
+}
+a:hover {
+  color: #747bff;
+}
+
+input[type="radio"] {
+  appearance: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mode-selection {
+  display: inline-flex;
+  background: #e8e8ee;
+  border-radius: 100px;
+  padding: 3px;
+  gap: 0;
+  margin-bottom: 1em;
+  position: relative;
+}
+
+.mode-selection::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  background: #fff;
+  border-radius: 100px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mode-selection:has(label:nth-child(2) input:checked)::before {
+  transform: translateX(100%);
+}
+
+.mode-selection label {
+  border-radius: 100px;
+  padding: 0.3em 1em;
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  color: #777;
+  margin: 0;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s;
+}
+
+.mode-selection label:has(input[type="radio"]:checked) {
+  background: transparent;
+  color: #646cff;
+}
+
+select {
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  padding: 0.4em 1em;
+  font-size: 1em;
+  background: #fff;
+  margin-top: 0.3em;
+  margin-bottom: 0.7em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+select:focus {
+  border-color: #646cff;
+}
+
+label {
+  font-size: 1em;
+  font-weight: 400;
+  margin-bottom: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.answers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin-top: 2em;
+  animation: answerSelection 0.2s ease;
+}
+
+.answers button:active {
+  animation: answerSelection 0.2s ease;
+}
+
+@keyframes answerSelection {
+  0% {
+    transform: rotate(0deg) scale(1);
   }
-  a:hover {
-    color: #747bff;
+  50% {
+    transform: rotate(10deg) scale(1.5);
   }
-  button {
-    background-color: #f9f9f9;
+  100% {
+    transform: rotate(0deg) scale(1);
   }
 }
