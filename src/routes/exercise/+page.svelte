@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { House } from 'lucide-svelte';
+	import { House, CircleCheck, CircleX } from 'lucide-svelte';
 	import RandomNoteStaff from '$lib/components/RandomNoteStaff.svelte';
 	import {
 		getNoteNamesForKey,
@@ -50,11 +50,11 @@
 
 	function submitAnswer(answer: NoteName) {
 		if (answer === currentNote.name) {
-			feedback = { kind: 'success', text: 'Succès !' };
+			feedback = { kind: 'success', text: 'Success!' };
 			currentNote = keyMode === 'no-key' ? pickRandomChromaticNote(clef) : pickRandomNote(keySignature, clef);
 			return;
 		}
-		feedback = { kind: 'error', text: 'Échec, réessayer.' };
+		feedback = { kind: 'error', text: 'Fail, try again.' };
 	}
 </script>
 
@@ -64,8 +64,8 @@
 		type="button"
 		class="home-button"
 		onclick={() => goto('/')}
-		aria-label="Retour au menu d'accueil"
-		title="Retour au menu d'accueil"
+		aria-label="Return to home menu"
+		title="Return to home menu"
 	>
 		<House size={24} />
 	</button>
@@ -107,9 +107,18 @@
 		{/each}
 	</div>
 
-	{#if feedback}
-		<p class="feedback" role="status" aria-live="polite">{feedback.text}</p>
-	{/if}
+	{#key feedback}
+		{#if feedback}
+			<p class="feedback {feedback.kind}" role="status" aria-live="polite">
+				{#if feedback.kind === 'success'}
+					<CircleCheck size={20} />
+				{:else}
+					<CircleX size={20} />
+				{/if}
+				{feedback.text}
+			</p>
+		{/if}
+	{/key}
 </main>
 
 <style>
@@ -130,8 +139,51 @@
 		justify-content: center;
 		max-width: 520px;
 	}
+	@keyframes pop-in {
+		from {
+			opacity: 0;
+			transform: translateY(6px) scale(0.97);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes shake {
+		0%   { transform: translateX(0); }
+		15%  { transform: translateX(-6px); }
+		30%  { transform: translateX(6px); }
+		45%  { transform: translateX(-5px); }
+		60%  { transform: translateX(5px); }
+		75%  { transform: translateX(-3px); }
+		90%  { transform: translateX(3px); }
+		100% { transform: translateX(0); }
+	}
+
 	.feedback {
-		margin-top: 0.75rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		margin-top: 1rem;
+		padding: 0.5em 1.2em;
+		border-radius: 99px;
+		font-size: 0.95em;
+		font-weight: 500;
+	}
+
+	.feedback.success {
+		animation: pop-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+		background: #edfaf4;
+		color: #1a7f4e;
+		border: 1px solid #b6ead0;
+	}
+
+	.feedback.error {
+		animation: shake 0.4s ease;
+		background: #fff0f0;
+		color: #c0392b;
+		border: 1px solid #f5c0bb;
 	}
 	
 	.mode-selection {
