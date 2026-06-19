@@ -152,10 +152,9 @@ label {
   flex-wrap: wrap;
   gap: 1em;
   margin-top: 2em;
-  animation: answerSelection 0.2s ease;
 }
 
-.answers button:active {
+.answers button:focus {
   animation: answerSelection 0.2s ease;
 }
 
@@ -164,7 +163,7 @@ label {
     transform: rotate(0deg) scale(1);
   }
   50% {
-    transform: rotate(10deg) scale(1.5);
+    transform: rotate(3deg) scale(1.1);
   }
   100% {
     transform: rotate(0deg) scale(1);
