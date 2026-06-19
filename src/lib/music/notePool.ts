@@ -43,12 +43,13 @@ export function getNoteNamesForKey(signature: KeySignature): NoteName[] {
 function getOctavesForClef(selectedClef: Clef): Array<2 | 3 | 4 | 5> {
 	switch (selectedClef) {
 		case 'bass':
-			return [2, 3];
+			return [3, 4];
 		case 'alto':
 			return [3, 4];
 		case 'tenor':
 			return [3, 4];
 		case 'treble':
+			return [4, 5];
 		default:
 			return [4, 5];
 	}
