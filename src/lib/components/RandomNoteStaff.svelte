@@ -69,8 +69,6 @@
 		let disposed = false;
 
 		try {
-			isReady = true;
-
 			renderScore = () => {
 				if (disposed || !scoreElement) {
 					return;
@@ -101,7 +99,7 @@
 				voice.draw(context, stave);
 			};
 
-			renderScore();
+			isReady = true;
 		} catch (err) {
 			if (disposed) {
 				return;

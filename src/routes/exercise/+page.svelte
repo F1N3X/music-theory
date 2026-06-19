@@ -41,10 +41,9 @@
 	const answerOptions = $derived(keyMode === 'no-key' ? chromaticNotes : getNoteNamesForKey(keySignature));
 
 	$effect(() => {
-		keySignature;
-		clef;
-		keyMode;
-		currentNote = keyMode === 'no-key' ? pickRandomChromaticNote(clef) : pickRandomNote(keySignature, clef);
+		currentNote = keyMode === 'no-key' 
+			? pickRandomChromaticNote(clef) 
+			: pickRandomNote(keySignature, clef);
 		feedback = null;
 	});
 
