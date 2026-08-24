@@ -30,9 +30,7 @@
 	let keyMode = $state<'with-key' | 'no-key'>('with-key');
 	const clefs: { value: Clef; label: string }[] = [
 		{ value: 'treble', label: 'Treble clef' },
-		{ value: 'bass', label: 'Bass clef' },
-		{ value: 'alto', label: 'Alto clef (C clef)' },
-		{ value: 'tenor', label: 'Tenor clef (C clef)' }
+		{ value: 'bass', label: 'Bass clef' }
 	];
 	let clef = $state<Clef>('treble');
 

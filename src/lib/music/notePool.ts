@@ -1,5 +1,5 @@
 export type KeySignature = 'C' | 'G' | 'D' | 'A' | 'E' | 'F' | 'Bb' | 'Eb' | 'Ab';
-export type Clef = 'treble' | 'bass' | 'alto' | 'tenor';
+export type Clef = 'treble' | 'bass';
 
 export type NoteName =
 	| 'C'
@@ -43,10 +43,6 @@ export function getNoteNamesForKey(signature: KeySignature): NoteName[] {
 function getOctavesForClef(selectedClef: Clef): Array<2 | 3 | 4 | 5> {
 	switch (selectedClef) {
 		case 'bass':
-			return [3, 4];
-		case 'alto':
-			return [3, 4];
-		case 'tenor':
 			return [3, 4];
 		case 'treble':
 			return [4, 5];
